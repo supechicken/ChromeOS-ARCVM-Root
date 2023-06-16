@@ -53,7 +53,7 @@ echo
 
 case $response in
 Y|y)
-  echo 'Rebooting...
+  echo 'Rebooting...'
   reboot
 ;;
 esac
