@@ -78,5 +78,6 @@ case $response in
 Y|y)
   echo 'Rebooting...'
   reboot
+  sleep 10
 ;;
 esac
