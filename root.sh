@@ -11,7 +11,10 @@ RESET='\e[0m'
 
 BACKUP_PATH=/mnt/stateful_partition/arcvm_root
 KERNEL_PATH=/opt/google/vms/android
+
+# prevent conflict between system libraries and Chromebrew libraries
 unset LD_LIBRARY_PATH
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
 function remount_rootfs() {
   echo '[+] Trying to remount root filesystem in read/write mode...'
@@ -37,7 +40,7 @@ fi
 
 if ! remount_rootfs; then
   echo -e "${YELLOW}Remount failed. Did you disable rootFS verification?${RESET}" >&2
-  read -p -N1 'Disable rootFS verification now? (This will reboot your system) [Y/n]: ' response
+  read -N1 -p 'Disable rootFS verification now? (This will reboot your system) [Y/n]: ' response
   echo
 
   case $response in
@@ -63,9 +66,17 @@ cp vmlinux.orig ${BACKUP_PATH}/vmlinux.orig
 echo "[+] Pointing ${KERNEL_PATH}/vmlinux to vmlinux.ksu..."
 ln -s vmlinux.ksu ${KERNEL_PATH}/vmlinux
 
-echo '[+] Stopping ARCVM...'
-vmc stop arcvm
-
 echo
-echo -e "${GREEN}[+] All done. Original kernel stored at ${BACKUP_PATH}/vmlinux.orig${RESET}"
-echo -e "${GREEN}[+] You can open the KernelSU app to validate root access.${RESET}"
+echo -e "${GREEN}[+] All done. Please reboot to apply changes."
+echo -e "${GREEN}[+] You can open the KernelSU app to validate root access after reboot.${RESET}"
+echo
+
+read -N1 -p 'Reboot now? [Y/n]: ' response
+echo
+
+case $response in
+Y|y)
+  echo 'Rebooting...'
+  reboot
+;;
+esac
