@@ -16,6 +16,11 @@ KERNEL_PATH=/opt/google/vms/android
 unset LD_LIBRARY_PATH
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
+if [[ ${EUID} != 0 ]]; then
+  echo -e "${RED}Please run this script as root.${RESET}" >&2
+  exit 1
+fi
+
 if [ ! -L ${KERNEL_PATH}/vmlinux ]; then
   echo -e "${RED}Your device did not rooted.${RESET}"
   exit 1
