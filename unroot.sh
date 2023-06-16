@@ -27,7 +27,7 @@ if [ ! -L ${KERNEL_PATH}/vmlinux ]; then
 fi
 
 read -N1 -p 'Are you sure to remove root? [Y/n]: ' response < /dev/tty
-echo
+echo -e "\n"
 
 case $response in
 Y|y);;
@@ -46,7 +46,7 @@ cp ${BACKUP_PATH}/vmlinux.orig vmlinux
 
 echo
 echo -e "${GREEN}[+] All Done. Please reboot to apply changes.${RESET}"
-echo
+echo -e "\n"
 
 read -N1 -p 'Reboot now? [Y/n]: ' response < /dev/tty
 echo
