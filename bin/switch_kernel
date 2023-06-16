@@ -1,0 +1,59 @@
+#!/bin/bash -eu
+
+if [[ ${EUID} != 0 ]]; then
+  echo 'Please run this script as root.' >&2
+  exit 1
+fi
+
+BACKUP_PATH=/mnt/stateful_partition/arcvm_root
+KERNEL_PATH=/opt/google/vms/android
+unset LD_LIBRARY_PATH
+
+kernel_target="$(readlink ${KERNEL_PATH}/vmlinux)"
+
+case $kernel_target in
+*.ksu)
+  current_kernel='KernelSU'
+  ;;
+*.orig)
+  current_kernel='stock'
+  ;;
+esac
+
+cat <<EOT
+Select kernel you want to use:
+
+  1. KernelSU patched kernel
+  2. Stock kernel
+
+You are using the ${current_kernel} kernel currently.
+EOT
+
+read -p -N1 'Which kernel do you want to use? [1/2]: ' response
+echo
+
+case $response in
+1)
+  new_target='kernel.ksu'
+;;
+2)
+  new_target='kernel.orig'
+;;
+*)
+  echo 'No changes made.'
+  exit 1
+;;
+esac
+
+if [[ $new_target == $kernel_target ]]; then
+  echo 'No changes made.'
+else
+  ln -sf ${new_target} vmlinux
+fi
+
+echo '[+] Stopping ARCVM...'
+vmc stop arcvm
+
+echo
+echo '[+] All done.'
+echo '[+] You can open the KernelSU app to validate kernel version.'

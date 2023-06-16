@@ -1,8 +1,17 @@
-#!/bin/bash -eu
-if [[ ${EUID} != 0 ]]; then
-  echo 'Please run this script as root.' >&2
-  exit 1
-fi
+#!/bin/bash
+set -eu
+
+RED='\e[1;31m'
+YELLOW='\e[1;33m'
+GREEN='\e[1;32m'
+BLUE='\e[1;34m'
+GRAY='\e[0;37m'
+MAGENTA='\e[1;35m'
+RESET='\e[0m'
+
+BACKUP_PATH=/mnt/stateful_partition/arcvm_root
+KERNEL_PATH=/opt/google/vms/android
+unset LD_LIBRARY_PATH
 
 function remount_rootfs() {
   echo '[+] Trying to remount root filesystem in read/write mode...'
@@ -16,11 +25,18 @@ function remove_rootfs_verification() {
   reboot
 }
 
-BACKUP_PATH=/mnt/stateful_partition/arcvm_root
-KERNEL_PATH=/opt/google/vms/android
+if [[ ${EUID} != 0 ]]; then
+  echo -e "${RED}Please run this script as root.${RESET}" >&2
+  exit 1
+fi
 
-if !remount_rootfs; then
-  echo 'Remount failed. Did you disable rootFS verification?' >&2
+if [ -L ${KERNEL_PATH}/vmlinux ]; then
+  echo -e "${RED}Your device is already rooted.${RESET}"
+  exit 1
+fi
+
+if ! remount_rootfs; then
+  echo -e "${YELLOW}Remount failed. Did you disable rootFS verification?${RESET}" >&2
   read -p -N1 'Disable rootFS verification now? (This will reboot your system) [Y/n]: ' response
   echo
 
@@ -35,13 +51,14 @@ if !remount_rootfs; then
   esac
 fi
 
-cd /opt/google/vms/android
+cd ${KERNEL_PATH}
 echo '[+] Downloading kernel...'
 curl -L\# https://github.com/supechicken/ChromeOS-ARCVM-Root/raw/main/kernel.bzImage -o vmlinux.ksu
 
 echo '[+] Backing up original kernel...'
 mkdir -p ${BACKUP_PATH}
-mv vmlinux ${BACKUP_PATH}/vmlinux.orig
+mv vmlinux vmlinux.orig
+cp vmlinux.orig ${BACKUP_PATH}/vmlinux.orig
 
 echo "[+] Pointing ${KERNEL_PATH}/vmlinux to vmlinux.ksu..."
 ln -s vmlinux.ksu ${KERNEL_PATH}/vmlinux
@@ -50,5 +67,5 @@ echo '[+] Stopping ARCVM...'
 vmc stop arcvm
 
 echo
-echo "[+] All done. Original kernel stored at ${BACKUP_PATH}/vmlinux.orig"
-echo '[+] You can open the KernelSU app to validate root access.'
+echo -e "${GREEN}[+] All done. Original kernel stored at ${BACKUP_PATH}/vmlinux.orig${RESET}"
+echo -e "${GREEN}[+] You can open the KernelSU app to validate root access.${RESET}"
