@@ -26,7 +26,7 @@ if [ ! -L ${KERNEL_PATH}/vmlinux ]; then
   exit 1
 fi
 
-read -N1 -p 'Are you sure to remove root? [Y/n]: ' response
+read -N1 -p 'Are you sure to remove root? [Y/n]: ' response < /dev/tty
 echo
 
 case $response in
@@ -48,7 +48,7 @@ echo
 echo -e "${GREEN}[+] All Done. Please reboot to apply changes.${RESET}"
 echo
 
-read -N1 -p 'Reboot now? [Y/n]: ' response
+read -N1 -p 'Reboot now? [Y/n]: ' response < /dev/tty
 echo
 
 case $response in

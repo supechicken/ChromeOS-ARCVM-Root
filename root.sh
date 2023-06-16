@@ -40,7 +40,7 @@ fi
 
 if ! remount_rootfs; then
   echo -e "${YELLOW}Remount failed. Did you disable rootFS verification?${RESET}" >&2
-  read -N1 -p 'Disable rootFS verification now? (This will reboot your system) [Y/n]: ' response
+  read -N1 -p 'Disable rootFS verification now? (This will reboot your system) [Y/n]: ' response < /dev/tty
   echo
 
   case $response in
@@ -71,7 +71,7 @@ echo -e "${GREEN}[+] All done. Please reboot to apply changes."
 echo -e "${GREEN}[+] You can open the KernelSU app to validate root access after reboot.${RESET}"
 echo
 
-read -N1 -p 'Reboot now? [Y/n]: ' response
+read -N1 -p 'Reboot now? [Y/n]: ' response < /dev/tty
 echo
 
 case $response in
