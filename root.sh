@@ -57,7 +57,7 @@ fi
 
 cd ${KERNEL_PATH}
 echo '[+] Downloading kernel...'
-curl -L\# https://github.com/supechicken/ChromeOS-ARCVM-Root/raw/main/kernel.bzImage -o vmlinux.ksu
+curl -L\# https://github.com/supechicken/ChromeOS-ARCVM-Root/raw/main/kernel/5.10.178_11005.bzImage -o vmlinux.ksu
 
 echo '[+] Backing up original kernel...'
 mkdir -p ${BACKUP_PATH}
