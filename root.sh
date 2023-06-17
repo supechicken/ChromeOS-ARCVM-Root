@@ -24,6 +24,7 @@ function remount_rootfs() {
 function remove_rootfs_verification() {
   /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 3
   /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 5
+  echo -e "${YELLOW}Please run this script again after reboot.${RESET}"
   echo '[+] Rebooting in 3 seconds...'
   sleep 3
   reboot
