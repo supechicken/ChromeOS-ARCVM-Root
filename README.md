@@ -2,6 +2,7 @@
 Root ChromeOS Android subsystem with KernelSU, only support ARCVM (not ARC++)
 
 All kernel bzImage under this directory are extracted from KernelSU's official ARCVM CI workflow
+
 Available kernels are under `kernel/` directory
 
 ### Instruction
