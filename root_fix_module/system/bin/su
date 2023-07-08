@@ -1,0 +1,3 @@
+#!/data/adb/ksu/bin/busybox sh
+
+exec /system/bin/su "$@"

@@ -1,0 +1,6 @@
+id=arcvm_kernelsu_fix
+name=ChromeOS ARCVM KernelSU Fix
+version=v1.0.2
+versionCode=1
+author=natsumerinchan
+description=Make KernelSU root works on ChromeOS ARCVM

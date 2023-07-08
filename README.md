@@ -15,3 +15,6 @@ curl -Ls https://raw.githubusercontent.com/supechicken/ChromeOS-ARCVM-Root/main/
 ```shell
 curl -Ls https://raw.githubusercontent.com/supechicken/ChromeOS-ARCVM-Root/main/unroot.sh | sudo bash -eu
 ```
+
+### Notes
+- Try installing the KernelSU module from `root_fix_module/` if root does not work on some of your Android apps.
