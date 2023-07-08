@@ -19,4 +19,4 @@ curl -Ls https://raw.githubusercontent.com/supechicken/ChromeOS-ARCVM-Root/main/
 ```
 
 ### Notes
-- Try installing the KernelSU module from `root_fix_module/` if root does not work on some of your Android apps.
+- Try installing the KernelSU module under `root_fix_module/` if root does not work on some of your Android apps.
