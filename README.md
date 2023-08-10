@@ -1,9 +1,7 @@
 ## Scripts for rooting ChromeOS ARCVM-based Android subsystem (Android 11+)
 Root ChromeOS Android subsystem with KernelSU, only support ARCVM (not ARC++)
 
-All kernel bzImage under this directory are extracted from KernelSU's official ARCVM CI workflow
-
-Available kernels are under `kernel/` directory
+This script will download and install the prebuilt ARCVM kernel (v0.6.6) from KernelSU GitHub Releases.
 
 ### Instruction
 **Note: This script will NOT install the KernelSU Android app automatically, you need to install it yourself**

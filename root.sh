@@ -56,17 +56,27 @@ if ! remount_rootfs; then
   esac
 fi
 
-cd ${KERNEL_PATH}
+cd /tmp
 echo '[+] Downloading kernel...'
-curl -L\# https://github.com/supechicken/ChromeOS-ARCVM-Root/raw/main/kernel/5.10.184_11088.bzImage -o vmlinux.ksu
+curl -L\# https://github.com/tiann/KernelSU/releases/download/v0.6.6/kernel-ARCVM-x86_64-5.10.178.zip -o ksu.zip
+
+echo '[+] Decompressing kernel...'
+mkdir -p ksu
+mount-zip ksu.zip ksu
+
+cd ${KERNEL_PATH}
 
 echo '[+] Backing up original kernel...'
 mkdir -p ${BACKUP_PATH}
 mv vmlinux vmlinux.orig
-cp vmlinux.orig ${BACKUP_PATH}/vmlinux.orig
+cp /tmp/ksu/bzImage ${BACKUP_PATH}/vmlinux.orig
 
 echo "[+] Pointing ${KERNEL_PATH}/vmlinux to vmlinux.ksu..."
 ln -s vmlinux.ksu ${KERNEL_PATH}/vmlinux
+
+echo "[+] Cleanup..."
+fuser-mount -u /tmp/ksu
+rmdir /tmp/ksu
 
 echo
 echo -e "${GREEN}[+] All done. Please reboot to apply changes."
