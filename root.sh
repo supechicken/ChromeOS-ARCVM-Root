@@ -63,13 +63,14 @@ curl -L\# https://github.com/tiann/KernelSU/releases/download/v0.6.6/kernel-ARCV
 echo '[+] Decompressing kernel...'
 mkdir -p ksu
 mount-zip ksu.zip ksu
+cp ksu/bzImage ${KERNEL_PATH}/vmlinux.ksu
 
 cd ${KERNEL_PATH}
 
 echo '[+] Backing up original kernel...'
 mkdir -p ${BACKUP_PATH}
 mv vmlinux vmlinux.orig
-cp /tmp/ksu/bzImage ${BACKUP_PATH}/vmlinux.ksu
+cp vmlinux.orig ${BACKUP_PATH}/vmlinux.orig
 
 echo "[+] Pointing ${KERNEL_PATH}/vmlinux to vmlinux.ksu..."
 ln -s vmlinux.ksu ${KERNEL_PATH}/vmlinux
