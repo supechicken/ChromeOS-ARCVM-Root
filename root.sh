@@ -69,7 +69,7 @@ cd ${KERNEL_PATH}
 echo '[+] Backing up original kernel...'
 mkdir -p ${BACKUP_PATH}
 mv vmlinux vmlinux.orig
-cp /tmp/ksu/bzImage ${BACKUP_PATH}/vmlinux.orig
+cp /tmp/ksu/bzImage ${BACKUP_PATH}/vmlinux.ksu
 
 echo "[+] Pointing ${KERNEL_PATH}/vmlinux to vmlinux.ksu..."
 ln -s vmlinux.ksu ${KERNEL_PATH}/vmlinux
