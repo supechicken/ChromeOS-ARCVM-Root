@@ -58,7 +58,7 @@ fi
 
 cd /tmp
 echo '[+] Downloading kernel...'
-curl -L\# https://github.com/tiann/KernelSU/releases/download/v0.6.6/kernel-ARCVM-x86_64-5.10.178.zip -o ksu.zip
+curl -L\# https://github.com/tiann/KernelSU/releases/download/v0.6.7/kernel-ARCVM-x86_64-5.10.178.zip -o ksu.zip
 
 echo '[+] Decompressing kernel...'
 mkdir -p ksu
