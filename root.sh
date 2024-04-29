@@ -29,8 +29,12 @@ function remount_rootfs() {
 }
 
 function remove_rootfs_verification() {
-  /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 3
-  /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 5
+  if [[ "$ARCH" =~ "arm64" ]];then
+    /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 4
+  else
+    /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 3
+    /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 5
+  fi
   echo -e "${YELLOW}Please run this script again after reboot.${RESET}"
   echo '[+] Rebooting in 3 seconds...'
   sleep 3
@@ -71,7 +75,7 @@ curl -L -'#' "https://github.com/tiann/KernelSU/releases/download/${KSU_VER}/ker
 echo '[+] Decompressing kernel...'
 mkdir -p ksu
 mount-zip ksu.zip ksu
-cp ksu/bzImage ${KERNEL_PATH}/vmlinux.ksu
+cp ksu/*Image ${KERNEL_PATH}/vmlinux.ksu
 
 cd ${KERNEL_PATH}
 
