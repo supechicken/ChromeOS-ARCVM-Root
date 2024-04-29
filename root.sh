@@ -12,8 +12,12 @@ RESET='\e[0m'
 BACKUP_PATH=/mnt/stateful_partition/arcvm_root
 KERNEL_PATH=/opt/google/vms/android
 
-KSU_VER='v0.7.0'
-KERNEL_VER='5.10.178'
+KSU_VER='v0.9.3'
+KERNEL_VER='5.10.209'
+ARCH="`arch`"
+if [[ "$ARCH" =~ "aarch64" ]];then
+  ARCH='arm64'
+fi
 
 # prevent conflict between system libraries and Chromebrew libraries
 unset LD_LIBRARY_PATH
@@ -61,6 +65,7 @@ fi
 
 cd /tmp
 echo '[+] Downloading kernel...'
+echo "${KSU_VER}/kernel-ARCVM-x86_64-${KERNEL_VER}.zip"
 curl -L -'#' "https://github.com/tiann/KernelSU/releases/download/${KSU_VER}/kernel-ARCVM-x86_64-${KERNEL_VER}.zip" -o ksu.zip
 
 echo '[+] Decompressing kernel...'
