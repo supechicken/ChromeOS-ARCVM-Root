@@ -29,7 +29,9 @@ function remount_rootfs() {
 }
 
 function remove_rootfs_verification() {
+  # KERN-A B for arm  ROOT-A B for x64
   if [[ "$ARCH" =~ "arm64" ]];then
+    /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 2
     /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 4
   else
     /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 3
