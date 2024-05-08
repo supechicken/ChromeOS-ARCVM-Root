@@ -12,8 +12,12 @@ RESET='\e[0m'
 BACKUP_PATH=/mnt/stateful_partition/arcvm_root
 KERNEL_PATH=/opt/google/vms/android
 
-KSU_VER='v0.7.0'
-KERNEL_VER='5.10.178'
+KSU_VER='v0.9.3'
+KERNEL_VER='5.10.209'
+ARCH="`arch`"
+if [[ "$ARCH" =~ "aarch64" ]];then
+  ARCH='arm64'
+fi
 
 # prevent conflict between system libraries and Chromebrew libraries
 unset LD_LIBRARY_PATH
@@ -25,8 +29,14 @@ function remount_rootfs() {
 }
 
 function remove_rootfs_verification() {
-  /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 3
-  /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 5
+  # KERN-A B for arm  ROOT-A B for x64
+  if [[ "$ARCH" =~ "arm64" ]];then
+    /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 2
+    /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 4
+  else
+    /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 3
+    /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 5
+  fi
   echo -e "${YELLOW}Please run this script again after reboot.${RESET}"
   echo '[+] Rebooting in 3 seconds...'
   sleep 3
@@ -61,12 +71,13 @@ fi
 
 cd /tmp
 echo '[+] Downloading kernel...'
-curl -L -'#' "https://github.com/tiann/KernelSU/releases/download/${KSU_VER}/kernel-ARCVM-x86_64-${KERNEL_VER}.zip" -o ksu.zip
+echo "${KSU_VER}/kernel-ARCVM-${ARCH}-${KERNEL_VER}.zip"
+curl -L -'#' "https://github.com/tiann/KernelSU/releases/download/${KSU_VER}/kernel-ARCVM-${ARCH}-${KERNEL_VER}.zip" -o ksu.zip
 
 echo '[+] Decompressing kernel...'
 mkdir -p ksu
 mount-zip ksu.zip ksu
-cp ksu/bzImage ${KERNEL_PATH}/vmlinux.ksu
+cp ksu/*Image ${KERNEL_PATH}/vmlinux.ksu
 
 cd ${KERNEL_PATH}
 
