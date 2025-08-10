@@ -12,15 +12,9 @@ RESET='\e[0m'
 BACKUP_PATH=/mnt/stateful_partition/arcvm_root
 KERNEL_PATH=/opt/google/vms/android
 
-# for x86_64, the latest version does not work
-KSU_VER='v0.8.1'
-KERNEL_VER='5.10.209'
-ARCH="`arch`"
-
-if [[ "$ARCH" =~ "aarch64" ]];then
-  ARCH='arm64'
-  KSU_VER='v1.0.1'
-fi
+KSU_VER='v1.0.5'
+KERNEL_VER='5.10.230'
+ARCH="$(arch)"
 
 # prevent conflict between system libraries and Chromebrew libraries
 unset LD_LIBRARY_PATH
